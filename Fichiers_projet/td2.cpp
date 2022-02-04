@@ -51,7 +51,22 @@ string lireString(istream& fichier)
 
 //TODO: Une fonction pour ajouter un Film à une ListeFilms, le film existant déjà; on veut uniquement ajouter le pointeur vers le film existant.  Cette fonction doit doubler la taille du tableau alloué, avec au minimum un élément, dans le cas où la capacité est insuffisante pour ajouter l'élément.  Il faut alors allouer un nouveau tableau plus grand, copier ce qu'il y avait dans l'ancien, et éliminer l'ancien trop petit.  Cette fonction ne doit copier aucun Film ni Acteur, elle doit copier uniquement des pointeurs.
 
+void ajouterFilm(ListeFilms* listeFilms, Film* filmAjout)
+{
+	if ((*listeFilms).capacite > (*listeFilms).nElements)
+	{
+		((*listeFilms).elements)[(*listeFilms).nElements] = filmAjout;
+		(*listeFilms).nElements++;
+	}
+	else
+	{
+		
+	}		
+}
+
 //TODO: Une fonction pour enlever un Film d'une ListeFilms (enlever le pointeur) sans effacer le film; la fonction prenant en paramètre un pointeur vers le film à enlever.  L'ordre des films dans la liste n'a pas à être conservé.
+
+void enleverFilm(ListeFilms* listeFilms, Film* film)
 
 //TODO: Une fonction pour trouver un Acteur par son nom dans une ListeFilms, qui retourne un pointeur vers l'acteur, ou nullptr si l'acteur n'est pas trouvé.  Devrait utiliser span.
 
