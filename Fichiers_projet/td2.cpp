@@ -55,7 +55,7 @@ void ajouterFilm(ListeFilms* listeFilms, Film* filmAjout)
 {
 	if ((*listeFilms).capacite > (*listeFilms).nElements)
 	{
-		((*listeFilms).elements)[(*listeFilms).nElements] = filmAjout;
+		(*listeFilms).elements[(*listeFilms).nElements] = filmAjout;
 		(*listeFilms).nElements++;
 	}
 
@@ -80,19 +80,45 @@ void ajouterFilm(ListeFilms* listeFilms, Film* filmAjout)
 
 void enleverFilm(ListeFilms* listeFilms, Film* filmEnlever)
 {
-	for (int i = )
+	for (int i = 0; i < (*listeFilms).nElements; i++)
+	{
+		if ((*listeFilms).elements[i] = filmEnlever)
+		{
+			for (int y = i; y < ((*listeFilms).nElements - 1); y++)
+				(*listeFilms).elements[y] = (*listeFilms).elements[y + 1];
+
+			(*listeFilms).elements[(*listeFilms).nElements] = nullptr;
+			(*listeFilms).nElements--;
+
+			break;
+		}
+	}
 }
 
 //TODO: Une fonction pour trouver un Acteur par son nom dans une ListeFilms, qui retourne un pointeur vers l'acteur, ou nullptr si l'acteur n'est pas trouvé.  Devrait utiliser span.
 
+Acteur* trouverActeur(ListeFilms* listeFilms, Acteur* acteurRecherche)
+{
+	for (Film* film : span<Film*>{ (*listeFilms).elements, (*listeFilms).nElements })
+	{
+		for (Acteur* acteur : span<Acteur*>{ ((*film).acteurs).elements, ((*film).acteurs).nElements })
+		{
+			if (acteur == acteurRecherche)
+				return acteur;
+		}
+	}
+
+	return nullptr;
+}
+
 //TODO: Compléter les fonctions pour lire le fichier et créer/allouer une ListeFilms.  La ListeFilms devra être passée entre les fonctions, pour vérifier l'existence d'un Acteur avant de l'allouer à nouveau (cherché par nom en utilisant la fonction ci-dessus).
-Acteur* lireActeur(istream& fichier)
+Acteur* lireActeur(istream& fichier, ListeFilms* listeFilms)
 {
 	Acteur acteur = {};
 	acteur.nom            = lireString(fichier);
 	acteur.anneeNaissance = lireUint16 (fichier);
 	acteur.sexe           = lireUint8  (fichier);
-	return {}; //TODO: Retourner un pointeur soit vers un acteur existant ou un nouvel acteur ayant les bonnes informations, selon si l'acteur existait déjà.  Pour fins de débogage, affichez les noms des acteurs crées; vous ne devriez pas voir le même nom d'acteur affiché deux fois pour la création.
+	return &(acteur); //TODO: Retourner un pointeur soit vers un acteur existant ou un nouvel acteur ayant les bonnes informations, selon si l'acteur existait déjà.  Pour fins de débogage, affichez les noms des acteurs crées; vous ne devriez pas voir le même nom d'acteur affiché deux fois pour la création.
 }
 
 Film* lireFilm(istream& fichier)
