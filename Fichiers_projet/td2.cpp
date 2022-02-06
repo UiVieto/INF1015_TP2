@@ -61,29 +61,26 @@ void ajouterFilm(ListeFilms* listeFilms, Film* filmAjout)
 
 	else
 	{
-		(*listeFilms).capacite *= 2;
-
 		Film** nouvelleListe = new Film*[(*listeFilms).capacite];
-		span<Film*> listeFilm = { (*listeFilms).elements, (*listeFilms).nElements };
-		int nbElementsNouvelleListe = 0;
 
-		for (Film* film : listeFilm)
-		{
-			nouvelleListe[nbElementsNouvelleListe] = film;
-			nbElementsNouvelleListe++;
-		}
+		for (int i = 0; i < (*listeFilms).nElements; i++)
+			nouvelleListe[i] = ((*listeFilms).elements)[i];
 			
+		nouvelleListe[(*listeFilms).nElements] = filmAjout;
+		(*listeFilms).nElements++;
+
 		delete[] (*listeFilms).elements;
 
 		(*listeFilms).elements = nouvelleListe;
+		(*listeFilms).capacite *= 2;
 	}		
 }
 
 //TODO: Une fonction pour enlever un Film d'une ListeFilms (enlever le pointeur) sans effacer le film; la fonction prenant en paramètre un pointeur vers le film à enlever.  L'ordre des films dans la liste n'a pas à être conservé.
 
-void enleverFilm(ListeFilms* listeFilms, Film* film)
+void enleverFilm(ListeFilms* listeFilms, Film* filmEnlever)
 {
-
+	for (int i = )
 }
 
 //TODO: Une fonction pour trouver un Acteur par son nom dans une ListeFilms, qui retourne un pointeur vers l'acteur, ou nullptr si l'acteur n'est pas trouvé.  Devrait utiliser span.
