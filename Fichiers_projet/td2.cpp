@@ -102,8 +102,7 @@ Acteur* trouverActeur(ListeFilms* listeFilms, Acteur* acteurRecherche)
 {	
 	for (Film* film : span<Film*> { (*listeFilms).elements, unsigned((*listeFilms).nElements) })
 	{	
-		span<Acteur*> listeActeurs{ ((*film).acteurs).elements, unsigned(((*film).acteurs).nElements) };
-		for (Acteur* acteur : listeActeurs)
+		for (Acteur* acteur : span<Acteur*> {((*film).acteurs).elements, unsigned(((*film).acteurs).nElements) })
 		{
 			if (acteur == acteurRecherche)
 				return acteur;
@@ -173,9 +172,12 @@ ListeFilms creerListe(string nomFichier)
 
 //TODO: Une fonction pour détruire un film (relâcher toute la mémoire associée à ce film, et les acteurs qui ne jouent plus dans aucun films de la collection).  Noter qu'il faut enleve le film détruit des films dans lesquels jouent les acteurs.  Pour fins de débogage, affichez les noms des acteurs lors de leur destruction.
 
-void detruireFilm()
+void detruireFilm(Film* filmDetruire)
 {
+	for (Acteur* acteur : span<Acteur*>{(*filmDetruire).acteurs.elements, unsigned((*filmDetruire).acteurs.nElements)})
+		enleverFilm(&(*acteur).joueDans, filmDetruire);
 
+	delete[] filmDetruire;
 }
 
 //TODO: Une fonction pour détruire une ListeFilms et tous les films qu'elle contient.
