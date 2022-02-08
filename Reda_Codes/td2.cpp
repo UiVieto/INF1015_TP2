@@ -49,41 +49,56 @@ string lireString(istream& fichier)
 
 #pragma endregion//}
 
-//TODO: Une fonction pour ajouter un Film à une ListeFilms, le film existant déjà; on veut uniquement ajouter le pointeur vers le film existant.  Cette fonction doit doubler la taille du tableau alloué, avec au minimum un élément, dans le cas où la capacité est insuffisante pour ajouter l'élément.  Il faut alors allouer un nouveau tableau plus grand, copier ce qu'il y avait dans l'ancien, et éliminer l'ancien trop petit.  Cette fonction ne doit copier aucun Film ni Acteur, elle doit copier uniquement des pointeurs.
-int ajouterFilm(Film* filmAjout, ListeFilms listeAjout)
+//TODO: Une fonction pour ajouter un Film à u ne ListeFilms, le film existant déjà; on veut uniquement ajouter le pointeur vers le film existant.  Cette fonction doit doubler la taille du tableau alloué, avec au minimum un élément, dans le cas où la capacité est insuffisante pour ajouter l'élément.  Il faut alors allouer un nouveau tableau plus grand, copier ce qu'il y avait dans l'ancien, et éliminer l'ancien trop petit.  Cette fonction ne doit copier aucun Film ni Acteur, elle doit copier uniquement des pointeurs.
+void ajouterFilm(Film* filmAjout, ListeFilms listeAjout)
 {
-	if (listeAjout.capacite ­> listeAjout.nElements + 1)
+	if (listeAjout.capacite > listeAjout.nElements + 1)
 	{
-		for ( i = 0; i < listeAjout.capacite; ++i)
+		for (int i = 0; i < listeAjout.capacite; ++i)
 		{
-			if (listeAjout[i] == NULL)
+			if (&(listeAjout.elements)[i] == NULL)
 			{
-				listeAjout[i] = filmajout; 
+				(listeAjout.elements)[i] = filmAjout;
 			}
 		}
-		return 0;
 	}
-	else 
+	else if (listeAjout.capacite == 1)
 	{
-		Film** dynList;
-		dynList = new Film* [listeAjout.capacite * 2];
-		for ( i = 0; i < listeAjout.capacite; ++i  )
+		ListeFilms dynList;
+		dynList.capacite = 1;
+		dynList.nElements = 1;
+		dynList.elements[0] = filmAjout;
+		delete[] listeAjout.elements;
+	}
+	else
+	{
+		ListeFilms dynList;
+		dynList.capacite = 2 * listeAjout.capacite;
+		dynList.nElements = listeAjout.nElements + 1;
+		for (int i = 0; i < listeAjout.capacite; ++i)
 		{
-			dynList[i] = listeAjout[i];
+			if ((dynList.elements)[i] == NULL)
+			{
+				(dynList.elements)[i] = (listeAjout.elements)[i];
+			}
 		}
+		dynList.elements[listeAjout.capacite] = filmAjout;
+		delete [] listeAjout.elements;
 
-		dynList[listeAjout.capacite] = filmajout;
-		delete[] listeAjout;
-		return 0;
 	}
 }
-
-
 //TODO: Une fonction pour enlever un Film d'une ListeFilms (enlever le pointeur) sans effacer le film; la fonction prenant en paramètre un pointeur vers le film à enlever.  L'ordre des films dans la liste n'a pas à être conservé.
-int enleverFilm(Film* filmEnl, ListeFilms listeFilm)
+void enleverFilm(Film* filmRetirer, ListeFilms listeRetirer) 
 {
+	for (int i = 0; i < listeRetirer.capacite; ++i)
+	{
+		if (&(listeRetirer.elements)[i] == &(filmRetirer))
+		{
+			(listeRetirer.elements)[i] = nullptr;
+			delete (listeRetirer.elements)[i];
+		}
+	}
 	
-
 }
 //TODO: Une fonction pour trouver un Acteur par son nom dans une ListeFilms, qui retourne un pointeur vers l'acteur, ou nullptr si l'acteur n'est pas trouvé.  Devrait utiliser span.
 
