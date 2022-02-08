@@ -74,7 +74,6 @@ void ajouterFilm(ListeFilms* listeFilms, Film* filmAjout)
 		delete[] (*listeFilms).elements;
 
 		(*listeFilms).elements = nouvelleListe;
-		
 	}		
 }
 
@@ -84,7 +83,7 @@ void enleverFilm(ListeFilms* listeFilms, Film* filmEnlever)
 {
 	for (int i = 0; i < (*listeFilms).nElements; i++)
 	{
-		if ((*listeFilms).elements[i] = filmEnlever)
+		if ((*listeFilms).elements[i] == filmEnlever)
 		{
 			for (int y = i; y < ((*listeFilms).nElements - 1); y++)
 				(*listeFilms).elements[y] = (*listeFilms).elements[y + 1];
@@ -127,25 +126,25 @@ Acteur* lireActeur(istream& fichier, ListeFilms* listeFilms)
 
 Film* lireFilm(istream& fichier, ListeFilms* listeFilms)
 {
-	Film film = {};
-	film.titre       = lireString(fichier);
-	film.realisateur = lireString(fichier);
-	film.anneeSortie = lireUint16 (fichier);
-	film.recette     = lireUint16 (fichier);
-	film.acteurs.nElements = lireUint8 (fichier);  //NOTE: Vous avez le droit d'allouer d'un coup le tableau pour les acteurs, sans faire de réallocation comme pour ListeFilms.  Vous pouvez aussi copier-coller les fonctions d'allocation de ListeFilms ci-dessus dans des nouvelles fonctions et faire un remplacement de Film par Acteur, pour réutiliser cette réallocation.
+	Film* film = new Film;
+	(*film).titre       = lireString(fichier);
+	(*film).realisateur = lireString(fichier);
+	(*film).anneeSortie = lireUint16 (fichier);
+	(*film).recette     = lireUint16 (fichier);
+	(*film).acteurs.nElements = lireUint8 (fichier);  //NOTE: Vous avez le droit d'allouer d'un coup le tableau pour les acteurs, sans faire de réallocation comme pour ListeFilms.  Vous pouvez aussi copier-coller les fonctions d'allocation de ListeFilms ci-dessus dans des nouvelles fonctions et faire un remplacement de Film par Acteur, pour réutiliser cette réallocation.
 	
-	Acteur** listeActeurs = new Acteur*[film.acteurs.nElements];
+	Acteur** listeActeurs = new Acteur*[(*film).acteurs.nElements];
 
-	for (int i = 0; i < film.acteurs.nElements; i++) 
+	for (int i = 0; i < (*film).acteurs.nElements; i++) 
 	{
 		Acteur* acteur = lireActeur(fichier, listeFilms); 
 		//TODO: Placer l'acteur au bon endroit dans les acteurs du film.
 		listeActeurs[i] = acteur;
 
 		//TODO: Ajouter le film à la liste des films dans lesquels l'acteur joue.
-		(*listeFilms).
+		ajouterFilm(&(*acteur).joueDans, film);
 	}
-	return {}; //TODO: Retourner le pointeur vers le nouveau film.
+	return film; //TODO: Retourner le pointeur vers le nouveau film.
 }
 
 ListeFilms creerListe(string nomFichier)
@@ -156,14 +155,28 @@ ListeFilms creerListe(string nomFichier)
 	int nElements = lireUint16(fichier);
 
 	//TODO: Créer une liste de films vide.
+	ListeFilms listeFilms = {};
+
+	(listeFilms).capacite = nElements;
+
+	for (int i = 0; i < nElements; i++)
+	{
+		ajouterFilm(&listeFilms, nullptr);
+	}
+
 	for (int i = 0; i < nElements; i++) {
-		lireFilm(fichier); //TODO: Ajouter le film à la liste.
+		ajouterFilm(&listeFilms, lireFilm(fichier, &listeFilms)); //TODO: Ajouter le film à la liste.
 	}
 	
-	return {}; //TODO: Retourner la liste de films.
+	return listeFilms; //TODO: Retourner la liste de films.
 }
 
 //TODO: Une fonction pour détruire un film (relâcher toute la mémoire associée à ce film, et les acteurs qui ne jouent plus dans aucun films de la collection).  Noter qu'il faut enleve le film détruit des films dans lesquels jouent les acteurs.  Pour fins de débogage, affichez les noms des acteurs lors de leur destruction.
+
+void detruireFilm()
+{
+
+}
 
 //TODO: Une fonction pour détruire une ListeFilms et tous les films qu'elle contient.
 
