@@ -60,7 +60,9 @@ void ajouterFilm(ListeFilms* listeFilms, Film* filmAjout)
 	}
 
 	else
-	{
+	{	
+		((*listeFilms).capacite == 0) ? (*listeFilms).capacite += 1 : (*listeFilms).capacite *= 2;
+
 		Film** nouvelleListe = new Film*[(*listeFilms).capacite];
 
 		for (int i = 0; i < (*listeFilms).nElements; i++)
@@ -72,7 +74,7 @@ void ajouterFilm(ListeFilms* listeFilms, Film* filmAjout)
 		delete[] (*listeFilms).elements;
 
 		(*listeFilms).elements = nouvelleListe;
-		(*listeFilms).capacite *= 2;
+		
 	}		
 }
 
