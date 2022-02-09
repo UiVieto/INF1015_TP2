@@ -51,29 +51,29 @@ string lireString(istream& fichier)
 
 //TODO: Une fonction pour ajouter un Film à une ListeFilms, le film existant déjà; on veut uniquement ajouter le pointeur vers le film existant.  Cette fonction doit doubler la taille du tableau alloué, avec au minimum un élément, dans le cas où la capacité est insuffisante pour ajouter l'élément.  Il faut alors allouer un nouveau tableau plus grand, copier ce qu'il y avait dans l'ancien, et éliminer l'ancien trop petit.  Cette fonction ne doit copier aucun Film ni Acteur, elle doit copier uniquement des pointeurs.
 
-void ajouterFilm(ListeFilms* listeFilms, Film* filmAjout)
+void ajouterFilm(ListeFilms& listeFilms, Film* filmAjout)
 {
-	if ((*listeFilms).capacite > (*listeFilms).nElements)
+	if (listeFilms.capacite > listeFilms.nElements)
 	{
-		(*listeFilms).elements[(*listeFilms).nElements] = filmAjout;
-		(*listeFilms).nElements++;
+		listeFilms.elements[listeFilms.nElements] = filmAjout;
+		listeFilms.nElements++;
 	}
 
 	else
 	{	
-		((*listeFilms).capacite == 0) ? (*listeFilms).capacite += 1 : (*listeFilms).capacite *= 2;
+		(listeFilms.capacite == 0) ? listeFilms.capacite += 1 : listeFilms.capacite *= 2;
 
-		Film** nouvelleListe = new Film*[(*listeFilms).capacite];
+		Film** nouvelleListe = new Film*[listeFilms.capacite];
 
-		for (int i = 0; i < (*listeFilms).nElements; i++)
-			nouvelleListe[i] = ((*listeFilms).elements)[i];
+		for (int i = 0; i < listeFilms.nElements; i++)
+			nouvelleListe[i] = listeFilms.elements[i];
 			
-		nouvelleListe[(*listeFilms).nElements] = filmAjout;
-		(*listeFilms).nElements++;
+		nouvelleListe[listeFilms.nElements] = filmAjout;
+		listeFilms.nElements++;
 
-		delete[] (*listeFilms).elements;
+		delete[] listeFilms.elements;
 
-		(*listeFilms).elements = nouvelleListe;
+		listeFilms.elements = nouvelleListe;
 	}		
 }
 
@@ -123,7 +123,7 @@ Acteur* lireActeur(istream& fichier, ListeFilms* listeFilms)
 	return (trouverActeur(listeFilms, &acteur) == nullptr) ? &acteur : trouverActeur(listeFilms, &acteur); //TODO: Retourner un pointeur soit vers un acteur existant ou un nouvel acteur ayant les bonnes informations, selon si l'acteur existait déjà.  Pour fins de débogage, affichez les noms des acteurs crées; vous ne devriez pas voir le même nom d'acteur affiché deux fois pour la création.
 }
 
-Film* lireFilm(istream& fichier, ListeFilms* listeFilms)
+Film* lireFilm(istream& fichier, ListeFilms& listeFilms)
 {
 	Film* film = new Film;
 	(*film).titre       = lireString(fichier);
@@ -159,13 +159,10 @@ ListeFilms creerListe(string nomFichier)
 	(listeFilms).capacite = nElements;
 
 	for (int i = 0; i < nElements; i++)
-	{
 		ajouterFilm(&listeFilms, nullptr);
-	}
 
-	for (int i = 0; i < nElements; i++) {
+	for (int i = 0; i < nElements; i++) 
 		ajouterFilm(&listeFilms, lireFilm(fichier, &listeFilms)); //TODO: Ajouter le film à la liste.
-	}
 	
 	return listeFilms; //TODO: Retourner la liste de films.
 }
@@ -192,10 +189,11 @@ void afficherActeur(const Acteur& acteur)
 void afficherListeFilms(const ListeFilms& listeFilms)
 {
 	//TODO: Utiliser des caractères Unicode pour définir la ligne de séparation (différente des autres lignes de séparations dans ce progamme).
-	static const string ligneDeSeparation = {};
+	static const string ligneDeSeparation = "++------------------------------++"s;
 	cout << ligneDeSeparation;
 	//TODO: Changer le for pour utiliser un span.
-	for (int i = 0; i < listeFilms.nElements; i++) {
+	for () 
+	{
 		//TODO: Afficher le film.
 		cout << ligneDeSeparation;
 	}
